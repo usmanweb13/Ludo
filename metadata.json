@@ -1,6 +1,0 @@
-{
-  "name": "Ludo",
-  "description": "Multiplayer Ludo board game featuring real-time matchmaking, custom private rooms, and local pass-and-play.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
