@@ -1,0 +1,128 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile containing stats and identity info",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Unique Google user ID"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Player display name"
+        },
+        "gamesPlayed": {
+          "type": "integer",
+          "description": "Total number of games played"
+        },
+        "gamesWon": {
+          "type": "integer",
+          "description": "Total number of games won"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when user profile was created"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when user profile was last updated"
+        }
+      },
+      "required": ["userId", "displayName", "gamesPlayed", "gamesWon", "createdAt", "updatedAt"]
+    },
+    "LudoRoom": {
+      "title": "LudoRoom",
+      "description": "A multiplayer game room for Ludo matchmaking and real-time state sync",
+      "type": "object",
+      "properties": {
+        "roomId": {
+          "type": "string",
+          "description": "Unique 4 to 8 char room code or document ID"
+        },
+        "name": {
+          "type": "string",
+          "description": "Room title or display name"
+        },
+        "hostId": {
+          "type": "string",
+          "description": "User ID of the room creator"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["waiting", "playing", "finished"],
+          "description": "Current lifecycle phase of the game room"
+        },
+        "isPublic": {
+          "type": "boolean",
+          "description": "Whether room is available in public matchmaking queue"
+        },
+        "maxPlayers": {
+          "type": "integer",
+          "description": "Maximum number of allowed players (2 to 4)"
+        },
+        "playerIds": {
+          "type": "array",
+          "description": "List of user IDs participating in this room"
+        },
+        "players": {
+          "type": "array",
+          "description": "Player details including id, name, color, and ready state"
+        },
+        "turn": {
+          "type": "string",
+          "enum": ["red", "green", "yellow", "blue"],
+          "description": "Color of the active turn"
+        },
+        "dice": {
+          "type": "integer",
+          "description": "Current rolled dice value (1-6) or 0 if unrolled"
+        },
+        "rolled": {
+          "type": "boolean",
+          "description": "Whether the active player has rolled the die"
+        },
+        "winner": {
+          "type": "string",
+          "description": "Color of the winning player or empty string"
+        },
+        "tokens": {
+          "type": "object",
+          "description": "Map of color to token positions array [step0, step1, step2, step3]"
+        },
+        "activeColors": {
+          "type": "array",
+          "description": "List of active player colors in this game"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the room was created"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the room state was last modified"
+        }
+      },
+      "required": ["roomId", "hostId", "status", "isPublic", "maxPlayers", "playerIds", "players", "turn", "rolled", "tokens", "activeColors", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/UserProfile"
+      },
+      "description": "Collection of user profiles scoped by user ID"
+    },
+    "/rooms/{roomId}": {
+      "schema": {
+        "$ref": "#/entities/LudoRoom"
+      },
+      "description": "Collection of multiplayer Ludo game and matchmaking rooms"
+    }
+  }
+}
